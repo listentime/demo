@@ -1,0 +1,27 @@
+#map {
+  position: relative;
+  margin: 0 auto;
+  width: 900px;
+  height: 600px;
+  background-color: #1f575c;
+  box-shadow: 0px 0px 50px 20px green;
+}
+
+.snake-head,
+.snake-body,
+.food {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: dotted 1px black;
+    background-color: pink;
+    border-radius: 17px;
+}
+
+.snake-head {
+    background-color: red;    
+}
+
+.food {
+    background-color: #00ff00;    
+}

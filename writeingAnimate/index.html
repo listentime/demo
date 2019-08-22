@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>等待动画</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box{
+            width: 40px;
+            height: 100px;
+            margin: 100px auto;
+            border: 1px solid red;
+        }
+        .box>span{
+            display: inline-block;
+            width: 4px;
+            height: 100%;
+            background-color: aqua;
+            animation: waitingAnimate 1.2s infinite ease-in-out;
+        }
+        .box .span2{
+            animation-delay: -1.1s;
+        }
+        .box .span3{
+            animation-delay: -1.0s;
+        }
+        .box .span4{
+            animation-delay: -0.9s;
+        }
+        .box .span5{
+            animation-delay: -0.8s;
+        }
+        @keyframes waitingAnimate{
+            0%, 40%, 100% {
+                transform: scaleY(0.4);
+                -webkit-transform: scaleY(0.4);
+            }20% {
+                transform: scaleY(1.0);
+                -webkit-transform: scaleY(1.0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span class="span1"></span>
+        <span class="span2"></span>
+        <span class="span3"></span>
+        <span class="span4"></span>
+        <span class="span5"></span>
+    </div>
+</body>
+</html>

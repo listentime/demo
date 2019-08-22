@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>视频播放</title>
+    <!--字体图标文件-->
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <!--修饰视频播放器样式-->
+    <link rel="stylesheet" href="css/player.css"/>
+</head>
+<body>
+<!--多媒体语义标签-->
+<figure>
+    <!--多媒体区域的标题解释-->
+    <figcaption>视频播放器</figcaption>
+    <div class="player">
+        <!--一开始隐藏 加载可以播放就显示-->
+        <video src="./media/fun.mp4"></video>
+        <!--自定义控制栏-->
+        <div class="controls">
+            <!-- 开始播放按钮  -->
+            <a href="javascript:;" class="switch fa fa-play"></a>
+            <!-- 进度显示区域 -->
+            <div class="progress">
+                <!--进度显示条-->
+                <div class="line"></div>
+                <!--默认的灰色进度条-->
+                <div class="bar"></div>
+            </div>
+            <!--时间区域-->
+            <div class="timer">
+                <span class="current">00:00:00</span> / <span class="total">00:00:00</span>
+            </div>
+            <!--全屏按钮 取消全屏按钮-->
+            <a href="javascript:;" class="expand fa fa-arrows-alt"></a>
+        </div>
+    </div>
+    <input type="text" class="dm">
+    <button class="send">发射</button>
+</figure>
+<script src="js/jquery.min.js"></script>
+<script>
+    /*需求*/
+    var video = document.querySelector('video');
+    //提供的多媒体相关的API只能在dom元素上使用
+    var $video = $(video);
+
+    /*转换时间  4000秒  01:06:40 */
+    var formatTime = function (time) {
+        var h = Math.floor(time / 3600);
+        var m = Math.floor(time % 3600 / 60);
+        var s = Math.floor(time % 60);
+        return (h >= 10 ? h : '0' + h) + ':' + (m >= 10 ? m : '0' + m) + ':' + (s >= 10 ? s : '0' + s);
+    };
+
+
+    /*1. loading 效果 */
+    /*当视频加载的可以播放了 显示视频标签*/
+    video.oncanplay = function () {
+        //video.style.display = 'block';
+        $video.show();
+        /*6. 视频总时长显示*/
+        $('.total').html(formatTime(video.duration));
+    };
+
+    /*2. 播放功能*/ /*3. 暂停功能*/
+    var $switch = $('.switch');
+    $switch.on('click', function () {
+        if ($switch.hasClass('fa-play')) {
+            /*播放*/
+            video.play();
+            $switch.removeClass('fa-play').addClass('fa-pause');
+        } else {
+            /*暂停*/
+            video.pause();
+            $switch.removeClass('fa-pause').addClass('fa-play');
+        }
+    });
+
+    /*4. 播放进度显示*/
+    /*5. 当前播放时间显示*/
+    /*观察播放的状态实时播放 在播放的过程中去修改显示的时间*/
+    video.ontimeupdate = function () {
+        /*获取当前的播放时间*/
+        //console.log(video.currentTime)
+        //播放时间的显示
+        var timeStr = formatTime(video.currentTime);
+        $('.current').html(timeStr);
+        /*播放进度显示*/
+        var ratio = video.currentTime / video.duration * 100 + '%';
+        $('.line').css('width', ratio);
+    }
+
+
+    var $expand = $('.expand');
+    $expand.on('click', function () {
+        //全屏操作需要给父容器  需要显示控制栏
+        if ($expand.hasClass('fa-arrows-alt')) {
+            /*7. 全屏功能*/
+            $('.player').get(0).webkitRequestFullScreen();
+            $expand.removeClass('fa-arrows-alt').addClass('fa-compress');
+        } else {
+            /*8. 取消全屏功能*/
+            document.webkitCancelFullScreen();
+            //$expand.addClass('fa-arrows-alt').removeClass('fa-compress');
+        }
+    });
+    /*全屏状态禁止了ESC按键事件触发*/
+    /* document.onkeyup = function (e) {
+        console.log(e.keyCode);
+    }*/
+    /*监听全屏状态是否发生改变  导致页面尺寸的改变 */
+    /*window.onresize = function () {
+        console.log(window.innerWidth);
+    }*/
+    $(window).on('resize', function () {
+        /*判断是否是全屏状态*/
+        if (!document.webkitIsFullScreen) {
+            /*ESC键 或者 自己点击了 取消全屏按钮*/
+            $expand.addClass('fa-arrows-alt').removeClass('fa-compress');
+        }
+    })
+    /*判断状态的变化  从全屏变的非全屏*/
+    /*修改按钮的样式*/
+
+
+    /*9. 跃进功能 file:// */
+    $('.bar').on('click', function (e) {
+        /*1. 获取点击的位置 距离进度条左边的距离 */
+        /*2. 获取进度条的总长度*/
+        /*3. 计算比例  根据比例计算 需要跳转的播放时间*/
+        // console.log(e.offsetX);
+        // console.log($(this).width());
+        var currentTime = e.offsetX / $(this).width() * video.duration;
+        video.currentTime = currentTime;
+    });
+
+    /*10. 播放结束重置功能*/
+    video.onended = function () {
+        video.currentTime = 0;
+        $switch.removeClass('fa-pause').addClass('fa-play');
+    }
+    $('.send').click(function(){
+        var text = $('.dm').val();
+        $('<span></span>').text(text).css({
+            width:100,
+            position:'absolute',
+            right:-100,
+            top:300*Math.random,
+            color:'rgb(100,255,255)'
+        }).animate({
+            right:800,
+        },10000,'linear',function(){
+            $(this).remove();
+        }).appendTo('.player');
+    });
+</script>
+</body>
+</html>

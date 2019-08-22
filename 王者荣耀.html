@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style>
+        .div1 {
+            height: 300px;
+            width: 200px;
+        }
+
+        .div2 {
+            
+            width: 100%;
+            height: 198px;
+
+        }
+
+        .div2 div {
+            height: 100%;
+            background: red;
+        }
+
+        .div3 {
+            width: 100%;
+            height: 50px;
+            background: green;
+            border: 1px solid #f7f7f7;
+            position: relative;
+        }
+
+        .div3 div {
+            height: 100%;
+        }
+
+        .div-s {
+            top: 0px;
+            left: 0px;
+            width: 0px;
+            background: #ffff00;
+            position: absolute;
+            ;
+            transition: all .2s;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <div class="div2">
+            <div>第一个英雄</div>
+        </div>
+        <div class="div3">
+            <div class="div">第二个英雄</div>
+            <div class="div-s">遮蔽层</div>
+        </div>
+        <div class="div3">
+            <div class="div">第三个英雄</div>
+            <div class="div-s">遮蔽层</div>
+        </div>
+    </div>
+    <h5>进行一波公钥测试</h5>
+    <script>
+        //  let $vul = $(".div2 div").html();
+        //  console.log($vul);
+        $(function () {
+           
+            $(".div3").hover(function () {
+                $(this).find(".div-s").css({ "width": "100%", "opacity": "1" })
+            }, function () {
+                $(this).find(".div-s").css({ "width": "0", "opacity": "0" })
+            }).on("click", function () {
+
+                //当前展示的英雄信息
+                let $vul = $(".div2 div").html();
+                // //赋值给下一个兄弟元素
+                
+                $(".div2 div").html($(this).children(1).html()).hide().slideDown();
+                $(this).children(1).html($vul);
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+.go{
+    position: fixed;
+    right: 100px;
+    top: 60px;
+    z-index: 10;
+}
+.more{
+    position: fixed;
+    right: 60px;
+    bottom: 100px;
+    z-index: 10;
+    animation: more 0.5s linear infinite alternate;
+}
+@keyframes more{
+    from{}
+    to{
+        bottom: 80px;
+    }
+}
+

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box div {
+            width: 200px;
+
+            position: absolute;
+        }
+
+        #box div img {
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+
+    </div>
+    <script>
+        var box = document.getElementById('box');
+
+
+        for (var i = 0; i < 30; i++) {
+
+            var divW = document.createElement('div');
+            var img = document.createElement('img');
+            box.appendChild(divW);
+            divW.appendChild(img);
+            img.src = 'image/' + (i + 1) + '.jpg';
+
+
+            // divW.innerHTML = "<img src ='image/" + (i + 1) + ".jpg'>"
+
+        }
+var item = box.children;
+//  console.log(box.children);
+        var arr = [];
+        // 放这里为什么不对
+        
+      
+        window.onload = function () {
+            waterFall();
+
+            function waterFall() {
+                
+                    var screenWidth = document.body.offsetWidth;
+                    var imgWidth = box.children[0].offsetWidth;
+                    var gap = 10;
+                    var geNums = parseInt(screenWidth / (imgWidth + gap));
+                // console.log( box.children.length);
+                for (var i = 0; i <item.length; i++) {
+                    
+                    // var index = 0;
+
+
+                    if (i < geNums) {
+                        item[i].style.left = i * (imgWidth + gap) + 'px';
+                        item[i].style.top = 0;
+                        arr.push(item[i].offsetHeight);
+                    } else {
+                        var minHeight = arr[0];
+                        // console.log(index);
+                        var index = 0;
+
+                        for (var j = 0; j < arr.length; j++) {
+                            if (minHeight > arr[j]) {
+                                minHeight = arr[j];
+                                index = j;
+                            }
+                        }
+                        console.log(item[i]);
+                        // console.log(box.children[index]);
+                        item[i].style.left =item[index].offsetLeft + 'px';
+
+                        item[i].style.top = arr[index] + gap + 'px';
+                        arr[index] =arr[index]+ item[i].offsetHeight + gap;
+                    }
+
+
+
+                }
+            }
+
+
+            window.onresize = function () {
+                waterFall();
+            };
+
+
+
+
+            window.onscroll = function () {
+                if (window.innerHeight + window.pageYOffset >= item[item.length - 1].offsetTop) {
+                    // 模拟 ajax 获取数据    
+                    var datas = [
+                        "image/1.jpg",
+                        ...
+                        "image/30.jpg"
+                    ];
+                    for (var i = 0; i < datas.length; i++) {
+                        var div30 = document.createElement("div");
+                       
+                        div30.innerHTML = '<img src="' + datas[i] + '">';
+                        console.log(div30);
+                        box.appendChild(div30);
+                    }
+                    waterFall();
+                }
+
+            };
+
+        }
+    </script>
+</body>
+
+</html>
